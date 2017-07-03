@@ -4,10 +4,10 @@
 #http://flask-appbuilder.readthedocs.io/en/latest/installation.html
 
 #Generating HTML from within Python is not fun, and actually pretty cumbersome because you have to do the
-#HTML escaping on your own to keep the application secure. Because of that Flask configures the Jinja2 template engine 
+#HTML escaping on your own to keep the application secure. Because of that Flask configures the Jinja2 template engine
 #for you automatically.
 #requests are objects that flask handles (get set post, etc)
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request, jsonify
 #scientific computing library for saving, reading, and resizing images
 from scipy.misc import imsave, imread, imresize
 #for matrix math
@@ -16,14 +16,14 @@ import numpy as np
 import keras.models
 #for regular expressions, saves time dealing with string data
 import re
-
+import json
 #system level operations (like loading files)
-import sys 
+import sys
 #for reading operating system data
 import os
 #tell our app where our saved model is
 sys.path.append(os.path.abspath("./model"))
-from load import * 
+from load import *
 #initalize our flask app
 app = Flask(__name__)
 #global vars for easy reusability
@@ -37,7 +37,7 @@ def convertImage(imgData1):
 	#print(imgstr)
 	with open('output.png','wb') as output:
 		output.write(imgstr.decode('base64'))
-	
+
 
 @app.route('/')
 def index():
@@ -74,8 +74,8 @@ def predict():
 		print "debug3"
 		#convert the response to a string
 		response = np.array_str(np.argmax(out,axis=1))
-		return response	
-	
+		return response
+
 
 if __name__ == "__main__":
 	#decide what port to run the app in
